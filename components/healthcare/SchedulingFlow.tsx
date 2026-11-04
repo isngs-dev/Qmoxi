@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, m } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, m, useInView } from "motion/react";
 import { Check } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/layout/SectionLabel";
 import { Reveal } from "@/components/shared/Reveal";
 import { HC_SCHEDULING } from "@/lib/constants/content/healthcare";
 import { cn } from "@/lib/utils/cn";
+import { usePrefersReducedMotion } from "@/lib/utils/usePrefersReducedMotion";
 
 type Mode = "book" | "change" | "confirm";
 
@@ -38,10 +39,32 @@ const DATES = [7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 21, 22, 23, 24, 25];
 
 export function SchedulingFlow() {
   const [mode, setMode] = useState<Mode>("book");
+  const [picked, setPicked] = useState(false);
+  const [paused, setPaused] = useState(false);
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { amount: 0.4 });
+  const reduce = usePrefersReducedMotion();
   const cfg = MODES[mode];
 
+  // Auto-advance Book → Change → Confirm → Book every few seconds while on screen.
+  // Pauses on hover/focus; a click restarts the timer from the chosen scenario.
+  useEffect(() => {
+    if (!inView || paused || reduce) return;
+    const keys = Object.keys(MODES) as Mode[];
+    const t = setTimeout(() => setMode(keys[(keys.indexOf(mode) + 1) % keys.length]), 4500);
+    return () => clearTimeout(t);
+  }, [mode, inView, paused, reduce]);
+
   return (
-    <section id="scheduling" aria-labelledby="scheduling-title" className="border-t border-gold/15 bg-ink-950 py-24 lg:py-32">
+    <section
+      ref={ref}
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setPaused(false)}
+      id="scheduling"
+      aria-labelledby="scheduling-title"
+      className="border-t border-gold/15 bg-ink-950 py-24 lg:py-32">
       <Container className="grid gap-14 lg:grid-cols-12 lg:items-center">
         <div className="lg:col-span-5">
           <SectionLabel index="04">Scheduling</SectionLabel>
@@ -60,7 +83,10 @@ export function SchedulingFlow() {
                 key={k}
                 type="button"
                 aria-pressed={mode === k}
-                onClick={() => setMode(k)}
+                onClick={() => {
+                  setMode(k);
+                  setPicked(true);
+                }}
                 className={cn(
                   "relative rounded-full px-5 py-2 text-sm font-semibold transition-colors",
                   mode === k ? "text-black" : "text-gold hover:text-gold-300",
@@ -148,7 +174,8 @@ export function SchedulingFlow() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   className="font-medium text-gold"
-                  aria-live="polite"
+                  // Announce only user-chosen changes, not the automatic rotation.
+                  aria-live={picked ? "polite" : "off"}
                 >
                   {cfg.status}
                 </m.span>

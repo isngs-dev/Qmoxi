@@ -14,7 +14,7 @@ const PLAQUES: { name: string; caption: string; href?: string; linkLabel?: strin
 
 export function SecurityCompliance() {
   return (
-    <section aria-labelledby="security-title" className="border-t border-gold/15 bg-ink-950 py-24 lg:py-32">
+    <section aria-labelledby="security-title" className="border-t border-gold/15 bg-ink-950 pb-10 pt-24 lg:pb-12 lg:pt-32">
       <Container>
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">

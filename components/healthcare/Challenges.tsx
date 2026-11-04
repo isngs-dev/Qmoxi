@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { animate, useInView, type AnimationPlaybackControls } from "motion/react";
 import { ChevronsLeftRight, X, Check } from "lucide-react";
+import { usePrefersReducedMotion } from "@/lib/utils/usePrefersReducedMotion";
 import { Container } from "@/components/layout/Container";
 import { SectionLabel } from "@/components/layout/SectionLabel";
 import { Reveal } from "@/components/shared/Reveal";
@@ -13,6 +15,45 @@ import { HC_CHALLENGES } from "@/lib/constants/content/healthcare";
  */
 export function Challenges() {
   const [pos, setPos] = useState(50);
+  const posRef = useRef(50);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(sliderRef, { amount: 0.4 });
+  const reduce = usePrefersReducedMotion();
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+
+  // Auto-sweep: glide left → right, hold, glide back, hold, repeat. Runs only while
+  // on screen (the slider is display:none on mobile) and stops while hovered/focused.
+  useEffect(() => {
+    if (!inView || hovered || focused || reduce) return;
+    let stopped = false;
+    let ctl: AnimationPlaybackControls | undefined;
+    let timer: ReturnType<typeof setTimeout>;
+    const run = (to: number) => {
+      ctl = animate(posRef.current, to, {
+        duration: 0.6 + (2.6 * Math.abs(to - posRef.current)) / 100,
+        ease: [0.65, 0, 0.35, 1],
+        onUpdate: (v) => {
+          posRef.current = v;
+          setPos(v);
+        },
+        onComplete: () => {
+          if (!stopped) timer = setTimeout(() => run(to === 100 ? 0 : 100), 2500);
+        },
+      });
+    };
+    timer = setTimeout(() => run(posRef.current < 100 ? 100 : 0), 800);
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+      ctl?.stop();
+    };
+  }, [inView, hovered, focused, reduce]);
+
+  const update = (v: number) => {
+    posRef.current = v;
+    setPos(v);
+  };
 
   return (
     <section aria-labelledby="challenges-title" className="relative py-24 lg:py-36">
@@ -30,7 +71,7 @@ export function Challenges() {
             <Reveal delay={0.1}>
               <p className="mt-6 max-w-2xl text-lg text-mist">
                 {HC_CHALLENGES.intro}
-                <span className="hidden sm:inline"> Drag the divider to compare a traditional IVR with Q.</span>
+                <span className="hidden sm:inline"> Hover to pause, or drag the divider to compare a traditional IVR with Q.</span>
               </p>
             </Reveal>
           </div>
@@ -46,7 +87,12 @@ export function Challenges() {
         </div>
 
         <Reveal className="mt-14 hidden sm:block lg:mt-20">
-          <div className="relative select-none overflow-hidden rounded-[1.75rem] border border-gold/20">
+          <div
+            ref={sliderRef}
+            onPointerEnter={() => setHovered(true)}
+            onPointerLeave={() => setHovered(false)}
+            className="relative select-none overflow-hidden rounded-[1.75rem] border border-gold/20"
+          >
             {/* After (With Q) — full layer */}
             <Panel tone="after" />
             {/* Before (Legacy IVR) — clipped layer */}
@@ -81,9 +127,12 @@ export function Challenges() {
               type="range"
               min={0}
               max={100}
+              step="any"
               value={pos}
-              onChange={(e) => setPos(Number(e.target.value))}
-              aria-valuetext={`${pos}% legacy IVR shown`}
+              onChange={(e) => update(Number(e.target.value))}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              aria-valuetext={`${Math.round(pos)}% legacy IVR shown`}
               className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
             />
           </div>

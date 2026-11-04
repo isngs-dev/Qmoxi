@@ -37,15 +37,44 @@ export function ScaleStats() {
         </RevealGroup>
 
         <Reveal className="mt-20">
-          <figure className="overflow-hidden rounded-[1.75rem] bg-black">
-            <Image
-              src="/images/retail/end-brands.jpg"
-              alt="End brands that utilize Qmoxi software — a wall of well-known retail, automotive, banking, hospitality and consumer brand logos"
-              width={1320}
-              height={1194}
-              sizes="(min-width: 1360px) 1264px, 100vw"
-              className="mx-auto h-auto w-full max-w-4xl"
-            />
+          {/* Two logo strips sliced from the original brand wall; top drifts right, bottom drifts left.
+              Pauses on hover/focus; the global reduced-motion rule stops it entirely. */}
+          <figure
+            tabIndex={0}
+            aria-label="End brands that utilize our software (scrolling logos pause while hovered or focused)"
+            className="group overflow-hidden rounded-[1.75rem] bg-[#0a0a0a] py-12 sm:py-16"
+          >
+            <figcaption className="px-6 text-center">
+              <span className="eyebrow block text-gold">End brands that utilize our software</span>
+              <span className="mt-2 block text-sm tracking-wide text-gold/80">(over 26,000 end clients utilize Q software)</span>
+            </figcaption>
+            <div className="mt-10 space-y-6 sm:mt-12">
+              {(
+                [
+                  ["top", "[animation-direction:reverse]", "Amazon, Apple, Walmart, Google, Microsoft, Samsung, Toyota, Volkswagen, Ford, Honda, BMW, Mercedes-Benz, Hyundai, Audi, Porsche, Tesla, GM, Nissan, McDonald's, Starbucks, Subway, Burger King, KFC, Coca-Cola, Pepsi, Nike, Adidas, H&M, IKEA, The Home Depot, Target, Costco, Best Buy, 7-Eleven, CVS Pharmacy, Walgreens, Bank of America, Chase, Wells Fargo, Visa, Mastercard, American Express, AT&T, Verizon, T-Mobile, Marriott, Hilton, Hyatt Place, The Walt Disney Company, Louis Vuitton"],
+                  ["bottom", "", "Gucci, Chanel, Cartier, Rolex, Tiffany & Co., Sephora, L'Oréal, Estée Lauder, Hard Rock Cafe, Planet Fitness, Uber, Chipotle, Wendy's, Dunkin', Panda Express, Buffalo Wild Wings, Domino's, Pizza Hut, Shell, BP, Chevron, FedEx, UPS, Sony, Dell, Lenovo, LG, Ferrari, Lamborghini, Lexus, Volvo, Kia, Mazda, Four Seasons, Ritz-Carlton, Capital One, TD Bank, Vodafone, Lidl, Aldi, Decathlon, Skechers, Puma, Under Armour, New Balance, Nespresso, Swarovski, Gold's Gym, John Deere, PayPal"],
+                ] as const
+              ).map(([row, direction, brands]) => (
+                <div key={row} className="mask-fade-x overflow-hidden">
+                  <div
+                    className={`flex w-max animate-marquee [animation-duration:90s] group-hover:[animation-play-state:paused] group-focus:[animation-play-state:paused] ${direction}`}
+                  >
+                    {[0, 1].map((copy) => (
+                      <Image
+                        key={copy}
+                        src={`/images/retail/end-brands-${row}.webp`}
+                        alt={copy === 0 ? brands : ""}
+                        aria-hidden={copy === 1 || undefined}
+                        width={6200}
+                        height={92}
+                        unoptimized
+                        className="h-16 w-auto max-w-none sm:h-20"
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </figure>
         </Reveal>
       </Container>

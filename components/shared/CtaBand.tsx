@@ -44,13 +44,13 @@ export function CtaBand({
         <div
           className={cn(
             "relative py-24 sm:py-32",
-            variant === "signal" && "pt-16 sm:pt-20",
+            variant === "signal" && "pt-6 sm:pt-8",
             variant === "frame" && "rounded-[2rem] border border-gold/25 px-6 hairline-grid sm:px-12 lg:px-20",
           )}
         >
           {variant === "gradient" && <div aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-brand-gradient lg:hidden" />}
           {/* In normal flow (not absolute) so the line always sits above the content and never overlaps it */}
-          {variant === "signal" && <SignalLine className="mb-14 opacity-80 sm:mb-20" />}
+          {variant === "signal" && <SignalLine className="mb-10 opacity-80 sm:mb-14" />}
           <div className={cn("relative grid gap-10 lg:grid-cols-12 lg:items-end")}>
             <div className="lg:col-span-8">
               {eyebrow && (

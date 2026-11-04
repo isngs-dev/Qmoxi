@@ -77,14 +77,7 @@ export function Footer() {
           </address>
         </div>
 
-        {/* Oversized wordmark — the brand's own line, set as typography */}
-        <div aria-hidden className="mt-20 select-none border-t border-black/20 pt-6">
-          <p className="display whitespace-nowrap text-[clamp(4.5rem,16vw,15rem)] leading-[0.85] tracking-[-0.04em] text-black">
-            Driven by <span className="italic">Q</span>.
-          </p>
-        </div>
-
-        <div className="mt-8 flex flex-col gap-4 border-t border-black/20 pt-6 text-xs text-black/75 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-4 border-t border-black/20 pt-6 text-xs text-black/75 sm:flex-row sm:items-center sm:justify-between">
           <p>{SITE.copyright}</p>
           <ul className="flex gap-6">
             <li>

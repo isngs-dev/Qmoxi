@@ -32,7 +32,6 @@ export default function HomePage() {
         title={HOME_CTA.title}
         body={HOME_CTA.body}
         primary={{ label: "Request a Demo", href: DEMO_HREF }}
-        secondary={{ label: "Contact our team", href: "/contact" }}
       />
     </>
   );

@@ -270,7 +270,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="group inline-flex h-14 items-center gap-3 rounded-full bg-gold px-7 font-semibold text-black transition-colors hover:bg-gold-300 disabled:cursor-wait disabled:opacity-70"
+          className="group inline-flex h-14 shrink-0 items-center gap-3 whitespace-nowrap rounded-full bg-gold px-7 font-semibold text-black transition-colors hover:bg-gold-300 disabled:cursor-wait disabled:opacity-70"
         >
           {isSubmitting ? (
             <>

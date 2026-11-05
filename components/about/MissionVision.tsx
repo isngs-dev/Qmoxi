@@ -18,7 +18,7 @@ export function MissionVision() {
               <span aria-hidden className="text-gold-800">”</span>
             </blockquote>
           </Reveal>
-          <Reveal as="figure" delay={0.12} className="border-black/15 lg:col-span-5 lg:mt-48 lg:border-l lg:pl-12">
+          <Reveal as="figure" delay={0.12} className="border-black/15 lg:col-span-5 lg:border-l lg:pl-12">
             <figcaption className="eyebrow flex items-center gap-3 text-gold-800">
               <span className="h-px w-8 bg-gold-800/60" /> Our Vision
             </figcaption>

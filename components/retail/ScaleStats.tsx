@@ -38,10 +38,10 @@ export function ScaleStats() {
 
         <Reveal className="mt-20">
           {/* Two logo strips sliced from the original brand wall; top drifts right, bottom drifts left.
-              Pauses on hover/focus; the global reduced-motion rule stops it entirely. */}
+              Pauses on keyboard focus; the global reduced-motion rule stops it entirely. */}
           <figure
             tabIndex={0}
-            aria-label="End brands that utilize our software (scrolling logos pause while hovered or focused)"
+            aria-label="End brands that utilize our software (scrolling logos pause while focused)"
             className="group overflow-hidden rounded-[1.75rem] bg-[#0a0a0a] py-12 sm:py-16"
           >
             <figcaption className="px-6 text-center">
@@ -57,7 +57,7 @@ export function ScaleStats() {
               ).map(([row, direction, brands]) => (
                 <div key={row} className="mask-fade-x overflow-hidden">
                   <div
-                    className={`flex w-max animate-marquee [animation-duration:90s] group-hover:[animation-play-state:paused] group-focus:[animation-play-state:paused] ${direction}`}
+                    className={`flex w-max animate-marquee [animation-duration:90s] group-focus-visible:[animation-play-state:paused] ${direction}`}
                   >
                     {[0, 1].map((copy) => (
                       <Image

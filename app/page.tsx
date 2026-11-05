@@ -27,7 +27,7 @@ export default function HomePage() {
       <EnterpriseReady />
       <BusinessSolutions />
       <CtaBand
-        variant="gradient"
+        variant="white"
         eyebrow={HOME_CTA.eyebrow}
         title={HOME_CTA.title}
         body={HOME_CTA.body}

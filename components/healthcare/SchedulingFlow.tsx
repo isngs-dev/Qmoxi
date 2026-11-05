@@ -30,7 +30,7 @@ const MODES: Record<Mode, { label: string; steps: string[]; from?: number; to: n
     label: "Confirm",
     steps: ["Q reaches the patient ahead of the visit", "Patient confirms by simply saying yes", "Schedule updated in real time", "Team sees a confirmed day"],
     to: 11,
-    status: "Confirmed · Thu 11 · 10:00",
+    status: "Confirmed · Fri 11 · 10:00",
   },
 };
 
@@ -155,9 +155,10 @@ export function SchedulingFlow() {
                           animate={{ scale: 1 }}
                           exit={{ scale: 0 }}
                           transition={{ type: "spring", stiffness: 400, damping: 22, delay: 0.35 }}
-                          className="absolute right-2 top-2 flex size-5 items-center justify-center rounded-full bg-black text-gold"
+                          // Mobile cells are tiny: tuck a smaller tick into the bottom-right corner so the date stays readable.
+                          className="absolute bottom-1 right-1 flex size-4 items-center justify-center rounded-full bg-black text-gold sm:bottom-auto sm:right-2 sm:top-2 sm:size-5"
                         >
-                          <Check aria-hidden className="size-3" />
+                          <Check aria-hidden className="size-2.5 sm:size-3" />
                         </m.span>
                       )}
                     </AnimatePresence>

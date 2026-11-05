@@ -61,7 +61,7 @@ export function RetailFeatures() {
               <m.li
                 key={f.id}
                 onViewportEnter={() => setActive(i)}
-                viewport={{ amount: 0.7, margin: "-20% 0px -20% 0px" }}
+                viewport={{ amount: "some", margin: "-45% 0px -45% 0px" }}
                 className="flex min-h-[48vh] flex-col justify-center border-t border-gold/15 py-12 first:border-t-0 lg:py-0"
               >
                 <p className={cn("display text-7xl transition-colors duration-500", i === active ? "text-gold" : "text-outline")}>
@@ -69,7 +69,7 @@ export function RetailFeatures() {
                 </p>
                 <h3 className="mt-6 text-3xl font-medium tracking-tight text-gold-100">{f.title}</h3>
                 <p className="mt-4 max-w-md text-lg leading-relaxed text-mist">{f.body}</p>
-                <div className="mt-8 aspect-[5/4] overflow-hidden rounded-2xl border border-gold/20 bg-ink-900 lg:hidden">
+                <div className="mt-8 aspect-[4/5] overflow-hidden rounded-2xl border border-gold/20 bg-ink-900 sm:aspect-[5/4] lg:hidden">
                   <div className="relative h-full">
                     <FeatureVisual id={f.id} />
                   </div>
@@ -131,7 +131,7 @@ function ProgramVisual() {
     { n: "Client reporting", s: 72, w: 22 },
   ];
   return (
-    <div aria-hidden className="flex h-full flex-col justify-center gap-4 p-8">
+    <div aria-hidden className="flex h-full flex-col justify-center gap-3 p-6 sm:gap-4 sm:p-8">
       <div className="flex justify-between font-mono text-[0.6rem] text-smoke">
         {["Wk 1", "Wk 3", "Wk 5", "Wk 7", "Wk 9"].map((w) => (
           <span key={w}>{w}</span>
@@ -145,7 +145,8 @@ function ProgramVisual() {
               className="absolute inset-y-0 origin-left rounded-md bg-gold"
               style={{ left: `${r.s}%`, width: `${r.w}%`, opacity: 0.45 + i * 0.12 }}
               initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true, amount: 0.6 }}
               transition={{ duration: 0.7, delay: 0.1 + i * 0.1 }}
             />
           </div>
@@ -239,7 +240,8 @@ function AnalyticsVisual() {
           strokeWidth="1.5"
           vectorEffect="non-scaling-stroke"
           initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, amount: 0.6 }}
           transition={{ duration: 1.4 }}
         />
       </svg>
